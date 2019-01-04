@@ -7,7 +7,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFails
 
-class TestWorker {
+class WorkerTest {
   val worker = Worker.start()
 
   data class JobArg(val a: String)
