@@ -3,9 +3,11 @@ package sample
 import kotlin.native.concurrent.TransferMode
 import kotlin.native.concurrent.Worker
 import kotlin.native.concurrent.freeze
+import kotlin.native.concurrent.isFrozen
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFails
+import kotlin.test.assertTrue
 
 class WorkerTest {
   val worker = Worker.start()
@@ -84,9 +86,43 @@ class WorkerTest {
   @Test
   fun stringsFrozen() {
     val valString = "Hello"
+    assertTrue(valString.isFrozen)
     worker.execute(TransferMode.SAFE, { valString }) {
       println(it)
     }
   }
 
+  @Test
+  fun requestTermination(){
+    val w = Worker.start()
+    w.requestTermination().result
+  }
+
+  /*
+  Uncomment if you want to see things blow up
+  @Test
+  fun unsafe(){
+    for (i in 0 until 1000){
+      unsafeLoop()
+      println("loop run $i")
+    }
+  }
+
+  private fun unsafeLoop() {
+    val args = Array(1000) { i ->
+      JobArg("arg $i")
+    }
+
+    val f = worker.execute(TransferMode.UNSAFE, { args }) {
+      it.forEach {
+        it
+      }
+    }
+
+    args.forEach {
+      it
+    }
+
+    f.result
+  }*/
 }
