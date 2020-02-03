@@ -42,10 +42,8 @@ class WorkerTest {
   @Test
   fun stillVisible() {
     val holder = ArgHolder(JobArg("Hi"))
-    assertFails {
-      worker.execute(TransferMode.SAFE, { holder.getAndClear() }) {
-        println(it)
-      }
+    worker.execute(TransferMode.SAFE, { holder.getAndClear() }) {
+      println(it)
     }
   }
 

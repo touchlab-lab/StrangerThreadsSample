@@ -13,11 +13,15 @@ class GlobalStateTests{
   @Test
   fun globalVal(){
     assertFalse(globalState.isFrozen)
-    worker.execute(TransferMode.SAFE,{}){
+    val workerFuture = worker.execute(TransferMode.SAFE,{}){
       assertFails {
         println(globalState.s)
       }
-    }.result
+    }
+
+    assertFails{
+      workerFuture.result
+    }
   }
 
   @Test
