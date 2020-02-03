@@ -40,7 +40,10 @@ class FreezeTests{
       it()
     }
 
-    assertNull(future.result)
+    assertFails {
+      // job throws, because count is frozen
+      future.result
+    }
     assertEquals(0, count)
     assertTrue(count.isFrozen)
   }
